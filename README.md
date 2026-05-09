@@ -1,6 +1,6 @@
 # Causal Inference for Business Decision Making — Reference Code
 
-Reference code accompanying the course *Causal Inference for Business Decision Making* at TUM.
+Reference code accompanying the course *Causal Inference for Business Decision Making*.
 
 Each session has a paired `sessionN.py` and `sessionN.R` file with end-to-end runnable examples.
 
@@ -25,34 +25,4 @@ Each session has a paired `sessionN.py` and `sessionN.R` file with end-to-end ru
 ```
 
 The `data/` folder sits one level above the scripts. Sessions 4 and 5 load
-`../data/lalonde_psid.csv` (with a fallback to `transcripts/code/data/...`
-when run from the course root).
-
-## Running the scripts
-
-### Python
-
-```bash
-cd 26S
-python session4.py
-```
-
-Required packages vary by session — see the header of each file. Common ones:
-`pandas`, `numpy`, `statsmodels`, `matplotlib`, `causalinference`,
-`linearmodels`, `econml`.
-
-### R
-
-```bash
-cd 26S
-Rscript session4.R
-```
-
-Required packages are listed at the top of each file (e.g. `MatchIt`, `cobalt`,
-`WeightIt`, `did`, `Synth`, `rdrobust`, `plm`, `grf`, `sensemakr`).
-
-## Data
-
-`data/lalonde_psid.csv` is the Dehejia & Wahba (1999) LaLonde-PSID1 sample:
-185 NSW treated units + 2,490 PSID-1 observational controls. Used in sessions 4
-and 5 to illustrate matching and weighting.
+`../data/lalonde_psid.csv`.
