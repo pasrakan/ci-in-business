@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Course's in-development project demos — not part of the public reference code
+project_demos/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+.ipynb_checkpoints/
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+
+# Editors
+.vscode/
+.idea/
+*.swp
