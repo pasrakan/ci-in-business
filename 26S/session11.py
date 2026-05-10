@@ -88,7 +88,7 @@ print(f"  Treat everybody  : {true_value(pi_treatall):+.3f}")
 print(f"  Treat-if tau>0   : {true_value((tau_hat > 0).astype(int)):+.3f}")
 print(f"  Learned policy   : {true_value(pi_tree):+.3f}  <- best")
 
-# Optional: visualise the policy tree
+# Optional: visualize the policy tree
 # pt.plot()
 
 
