@@ -59,16 +59,20 @@ ps_model = sm.Logit(df["treat"], sm.add_constant(df[covars])).fit(disp=0)
 df["e"]     = ps_model.predict(sm.add_constant(df[covars]))
 df["w_raw"] = np.where(df.treat == 1, 1 / df.e, 1 / (1 - df.e))
 
-# 2a. Horvitz-Thompson IPW (raw weights)
-tau_ipw = ((df.treat * df.re78 / df.e).mean()
-           - ((1 - df.treat) * df.re78 / (1 - df.e)).mean())
-print(f"Estimator 2a (IPW raw):        tau = {tau_ipw:+8.1f}")
+# IPW SEs use HC1 sandwich (robust) to match R's svyglm output;
+# default WLS reports model-based SEs that treat weights as known precision.
+
+# 2a. IPW raw weights: weighted regression of Y on T
+m_raw = sm.WLS(df["re78"], sm.add_constant(df["treat"]),
+               weights=df["w_raw"]).fit(cov_type="HC1")
+print(f"Estimator 2a (IPW raw):        "
+      f"tau = {m_raw.params['treat']:+8.1f}  SE = {m_raw.bse['treat']:.1f}")
 
 # 2b. Trimmed IPW (cap at 99th percentile)
 thresh = df.w_raw.quantile(0.99)
 df["w_trim"] = np.minimum(df.w_raw, thresh)
 m_trim = sm.WLS(df["re78"], sm.add_constant(df["treat"]),
-                weights=df["w_trim"]).fit()
+                weights=df["w_trim"]).fit(cov_type="HC1")
 print(f"Estimator 2b (IPW trimmed):    "
       f"tau = {m_trim.params['treat']:+8.1f}  SE = {m_trim.bse['treat']:.1f}")
 
@@ -76,7 +80,7 @@ print(f"Estimator 2b (IPW trimmed):    "
 p_t = df.treat.mean()
 df["w_stab"] = np.where(df.treat == 1, p_t / df.e, (1 - p_t) / (1 - df.e))
 m_stab = sm.WLS(df["re78"], sm.add_constant(df["treat"]),
-                weights=df["w_stab"]).fit()
+                weights=df["w_stab"]).fit(cov_type="HC1")
 print(f"Estimator 2c (IPW stabilized): "
       f"tau = {m_stab.params['treat']:+8.1f}  SE = {m_stab.bse['treat']:.1f}")
 
